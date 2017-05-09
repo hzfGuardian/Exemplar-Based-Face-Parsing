@@ -170,7 +170,6 @@ end
 
 
 -- Processing with image
-
 local img = frame.forward(img)
 image.save("src.png", img)
 if img:dim() == 3 then
