@@ -55,7 +55,7 @@ local function prepDrivingColors(classes)
    local colors = {}
 
    local mapping = {
-      Background    = colorPalette[gra],
+      Background    = colorPalette[whi],
 
       FaceSkin      = colorPalette[yel],
 
@@ -73,7 +73,7 @@ local function prepDrivingColors(classes)
 
       LowerLip      = colorPalette[gre],
 
-      Hair          = colorPalette[gol],
+      Hair          = colorPalette[gra],
    }
 
    for i,class in ipairs(classes) do
