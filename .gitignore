@@ -2,3 +2,6 @@
 train/data/helen/
 train/save/
 train/media/
+visualize/recv
+visualize/send
+
