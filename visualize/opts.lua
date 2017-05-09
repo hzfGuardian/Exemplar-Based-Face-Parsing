@@ -12,7 +12,7 @@ function opts.parse(arg)
    local opt = lapp [[
    Command line options:
    ## I/O
-   -i, --input    (default path/video.mp4)
+   -i, --input    (default ../train/data/helen/images/)
                   Input folder/file location for image/video respectively or cam0 for camera
    -r, --ratio    (default 1)
                   Rescale image size for faster processing
@@ -25,7 +25,7 @@ function opts.parse(arg)
                   cityscapes/camvid/sun: cs/cv/su
 
    ## Model
-   -d, --dmodel   (default /media/HDD1/Models/)
+   -d, --dmodel   (default ../train/save/trained/model/)
                   Folder location of models
    -m, --model    (default enc_2_1)
                   Model version
