@@ -1,0 +1,1 @@
+qlua run.lua -i ../train/data/helen/images/ -d ../train/save/trained/model/ -m '' --net 24
