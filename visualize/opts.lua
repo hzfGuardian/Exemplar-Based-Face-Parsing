@@ -12,7 +12,7 @@ function opts.parse(arg)
    local opt = lapp [[
    Command line options:
    ## I/O
-   -i, --input    (default ../train/data/helen/images/)
+   -i, --input    (default test/)
                   Input folder/file location for image/video respectively or cam0 for camera
    -r, --ratio    (default 1)
                   Rescale image size for faster processing
