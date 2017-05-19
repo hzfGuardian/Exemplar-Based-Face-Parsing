@@ -222,4 +222,3 @@ colored:add(scaledImg[1]:float())
 image.save('res.png', colored)
 
 collectgarbage()
-
