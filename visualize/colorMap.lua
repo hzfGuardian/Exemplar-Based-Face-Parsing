@@ -55,25 +55,25 @@ local function prepDrivingColors(classes)
    local colors = {}
 
    local mapping = {
-      Background    = colorPalette[whi],
+      Background    = {1.0, 1.0, 1.0},
 
-      FaceSkin      = colorPalette[yel],
+      FaceSkin      = {255/255, 253/255,  75/255},
 
-      LeftEyebrow   = colorPalette[red],
-      RightEyebrow  = colorPalette[red],
+      LeftEyebrow   = {243/255, 129/255,  130/255},
+      RightEyebrow  = {206/255, 34/255,  35/255},
 
-      LeftEye       = colorPalette[blu],
-      RightEye      = colorPalette[blu],
+      LeftEye       = {31/255, 116/255,  174/255},
+      RightEye      = {94/255, 199/255,  253/255},
 
-      Nose          = colorPalette[mag],
+      Nose          = {253/255, 136/255,  63/255},
 
-      UpperLip      = colorPalette[gre],
+      UpperLip      = {135/255, 234/255,  121/255},
 
-      InnerMouth    = colorPalette[pin],
+      InnerMouth    = {253/255, 57/255,  252/255},
 
-      LowerLip      = colorPalette[gre],
+      LowerLip      = {15/255, 126/255,  18/255},
 
-      Hair          = colorPalette[gra],
+      Hair          = {55/255, 51/255,  52/255},
    }
 
    for i,class in ipairs(classes) do
@@ -85,131 +85,9 @@ local function prepDrivingColors(classes)
    end
 end
 
-local function prepCamVidColors(classes)
-   local colors = {}
-
-   -- Assign default colors to all the classes
-   for i = 1, #classes do
-      table.insert(colors, defaultColor)
-   end
-
-   -- Colors => Classes
-   -- Assign specific color to respective classes
-   for i = 1, #classes do
-      if classes[i] == 'Misc' then
-         colors[i] = colorPalette[pur]
-      elseif classes[i] == 'Building' then
-         colors[i] = colorPalette[kha]
-      elseif classes[i] == 'Bicyclist' then
-         colors[i] = colorPalette[gre]
-      elseif classes[i] == 'Car' then
-         colors[i] = colorPalette[blu]
-      elseif classes[i] == 'CarLuggagePram' then
-         colors[i] = colorPalette[mag]
-      elseif classes[i] == 'Pedestrian' then
-         colors[i] = colorPalette[yel]
-      elseif classes[i] == 'Pole' then
-         colors[i] = colorPalette[cya]
-      elseif classes[i] == 'Fence' then
-         colors[i] = colorPalette[gra]
-      elseif classes[i] == 'LameMkgs' then
-         colors[i] = colorPalette[lbl]
-      elseif classes[i] == 'MiscText' then
-         colors[i] = colorPalette[red]
-      elseif classes[i] == 'OtherMoving' then
-         colors[i] = colorPalette[whi]
-      elseif classes[i] == 'Road' then
-         colors[i] = colorPalette[bro]
-      elseif classes[i] == 'Sidewalk' then
-         colors[i] = colorPalette[neg]
-      elseif classes[i] == 'SignSymbol' then
-         colors[i] = colorPalette[pin]
-      elseif classes[i] == 'Sky' then
-         colors[i] = colorPalette[whi]
-      elseif classes[i] == 'Tree' then
-         colors[i] = colorPalette[gre]
-      elseif classes[i] == 'TruckBus' then
-         colors[i] = colorPalette[blu]
-      elseif classes[i] == 'Void' then
-         colors[i] = colorPalette[pur]
-      end
-   end
-   colorMap.getColors = function()
-      return colors
-   end
-end
-
-local function prepIndoorColors(classes)
-   local colors = {}
-
-   local mapping = {
-      unlabeled      = colorPalette[bla],
-      ceiling        = colorPalette[red],
-      wall           = colorPalette[whi],
-      floor          = colorPalette[gre],
-
-      door           = colorPalette[blu],
-      window         = colorPalette[blu],
-
-      picture        = colorPalette[mag],
-      whiteboard     = colorPalette[mag],
-      bookshelf      = colorPalette[mag],
-      shelves        = colorPalette[mag],
-      books          = colorPalette[mag],
-
-      cabinet        = colorPalette[bro],
-      table          = colorPalette[bro],
-      dresser        = colorPalette[bro],
-      desk           = colorPalette[bro],
-      counter        = colorPalette[bro],
-
-      chair          = colorPalette[yel],
-      sofa           = colorPalette[yel],
-      bed            = colorPalette[yel],
-
-      blinds         = colorPalette[pur],
-      curtain        = colorPalette[pur],
-      shower_curtain = colorPalette[pur],
-      clothes        = colorPalette[pur],
-      pillow         = colorPalette[pur],
-
-      person         = colorPalette[cya],
-
-      floor_mat      = colorPalette[gra],
-      bag            = colorPalette[gra],
-      box            = colorPalette[gra],
-      fridge         = colorPalette[gra],
-      mirror         = colorPalette[gra],
-      tv             = colorPalette[gra],
-      paper          = colorPalette[gra],
-      night_stand    = colorPalette[gra],
-      lamp           = colorPalette[gra],
-
-      towel          = colorPalette[bla],
-      toilet         = colorPalette[bla],
-      sink           = colorPalette[bla],
-      bathtub        = colorPalette[bla],
-   }
-
-   for i,class in ipairs(classes) do
-      colors[i] = mapping[class] or defaultColor
-   end
-
-   colorMap.getColors = function()
-      return colors
-   end
-end
 
 function colorMap:init(opt, classes)
-   if opt.dataset == 'su' then
-      prepIndoorColors(classes)
-   elseif opt.dataset == 'cs'then
-      prepDrivingColors(classes)
-   elseif opt.dataset == 'cv'then
-      prepCamVidColors(classes)
-   else
-      prepDrivingColors(classes)
-   end
+   prepDrivingColors(classes)
 end
 
 return colorMap
