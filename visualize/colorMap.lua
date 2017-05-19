@@ -55,25 +55,25 @@ local function prepDrivingColors(classes)
    local colors = {}
 
    local mapping = {
-      Background    = {1.0, 1.0, 1.0},
+      Background    = colorPalette[whi],
 
-      FaceSkin      = {255/255, 253/255,  75/255},
+      FaceSkin      = colorPalette[yel],
 
-      LeftEyebrow   = {243/255, 129/255,  130/255},
-      RightEyebrow  = {206/255, 34/255,  35/255},
+      LeftEyebrow   = colorPalette[red],
+      RightEyebrow  = colorPalette[red],
 
-      LeftEye       = {31/255, 116/255,  174/255},
-      RightEye      = {94/255, 199/255,  253/255},
+      LeftEye       = colorPalette[blu],
+      RightEye      = colorPalette[blu],
 
-      Nose          = {253/255, 136/255,  63/255},
+      Nose          = {250/255, 128/255,  10/255},
 
       UpperLip      = {135/255, 234/255,  121/255},
 
       InnerMouth    = {253/255, 57/255,  252/255},
 
-      LowerLip      = {15/255, 126/255,  18/255},
+      LowerLip      = colorPalette[gre],
 
-      Hair          = {55/255, 51/255,  52/255},
+      Hair          = colorPalette[bro],
    }
 
    for i,class in ipairs(classes) do
