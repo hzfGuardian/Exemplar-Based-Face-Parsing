@@ -16,10 +16,10 @@ function opts.parse(arg)
    -d,--learningRateDecay  (default 1e-7)        learning rate decay (in # samples)
    -w,--weightDecay        (default 2e-4)        L2 penalty on the weights
    -m,--momentum           (default 0.9)         momentum
-   -b,--batchSize          (default 20)          batch size
+   -b,--batchSize          (default 10)         batch size
    --maxepoch              (default 200)         maximum number of training epochs
    --plot                                        plot training/testing error
-   --lrDecayEvery          (default 100)          Decay learning rate every X epoch by 1e-1
+   --lrDecayEvery          (default 100)         Decay learning rate every X epoch by 1e-1
 
    Device Related:
    -t,--threads            (default 8)           number of threads
@@ -34,9 +34,9 @@ function opts.parse(arg)
    --dataset               (default cs)          dataset type: cv(CamVid)/cs(cityscapes)/su(SUN)
    --cachepath             (default media/)      cache directory to save the loaded dataset
    --imHeight              (default 256)         image height  (360 cv/256 cs/256 su)
-   --imWidth               (default 328)         image width   (480 cv/512 cs/328 su)
+   --imWidth               (default 512)         image width   (480 cv/512 cs/328 su)
    --labelHeight           (default 32)          label height  (45  cv/32 cs/32 su)
-   --labelWidth            (default 41)          label width   (60  cv/64 cs/41 su)
+   --labelWidth            (default 64)          label width   (60  cv/64 cs/41 su)
    --smallNet                                    reduce number of classes
 
    Model Related:
@@ -46,7 +46,7 @@ function opts.parse(arg)
                            pretrained encoder for which you want to train your decoder
 
    Saving/Displaying Information:
-   --noConfusion           (default skip)
+   --noConfusion           (default all)
                            skip: skip confusion, all: test+train, tes : test only
    --printNorm                                   For visualize norm factor while training
  ]]

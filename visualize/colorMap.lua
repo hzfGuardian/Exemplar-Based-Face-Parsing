@@ -65,11 +65,11 @@ local function prepDrivingColors(classes)
       LeftEye       = colorPalette[blu],
       RightEye      = colorPalette[blu],
 
-      Nose          = {250/255, 128/255,  10/255},
+      Nose          = colorPalette[pin],
 
-      UpperLip      = {135/255, 234/255,  121/255},
+      UpperLip      = colorPalette[gre],
 
-      InnerMouth    = {253/255, 57/255,  252/255},
+      InnerMouth    = colorPalette[pur],
 
       LowerLip      = colorPalette[gre],
 

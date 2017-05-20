@@ -29,6 +29,8 @@ local w, dE_dw
 local model = t.model
 print '==> flattening model parameters'
 w,dE_dw = model:getParameters()
+
+--w = torch.load('weg74.t7')
 ----------------------------------------------------------------------
 print '==> defining training procedure'
 
@@ -107,7 +109,8 @@ local function train(trainData, classes, epoch)
          -- return f and df/dX
          return err, dE_dw
       end
-
+	
+	torch.save(epoch .. 'we.t7', w)
       -- optimize on current mini-batch
       local _, errt = optim.adam(eval_E, w, optimState)
 
@@ -143,6 +146,7 @@ local function train(trainData, classes, epoch)
 
    trainError = totalerr
    collectgarbage()
+   
    return confusion, model, loss
 end
 
