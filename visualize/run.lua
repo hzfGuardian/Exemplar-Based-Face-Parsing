@@ -144,81 +144,82 @@ source.fps = opt.fps
 -- source height and width gets updated by __init based on the input video
 frame:init(opt, source)
 
--- Create a window for displaying output frames
---win = qtwidget.newwindow
---   ( source.w * opt.ratio * opt.zoom + 75
---   , source.h * opt.ratio * opt.zoom
---   , 'e-Lab Scene Parser'
---   )
+local function has_image_extensions(filename)
+   local ext = string.lower(path.extension(filename))
 
-local qtimer = qt.QTimer()
-
--- Set font size to a visible dimension
---win:setfontsize(12)
-
--- Show legends in the output window:
-local dy = (opt.zoom * opt.ratio * source.h)/(#classes + 1)
-for i = 1,#classes do
-   local y = (i-1)*dy
-   --win:rectangle(source.w * opt.ratio * opt.zoom, y, 75, dy)
-   --win:setcolor(colors[i][1],colors[i][2],colors[i][3])
-   --win:fill()
-   --win:setcolor('black')
-   --win:moveto(source.w * opt.ratio * opt.zoom + 5, y+dy/2)
-   --win:show(classes[i])
+   -- compare with list of image extensions
+   local img_extensions = {'.jpeg', '.jpg', '.png', '.ppm', '.pgm'}
+   for i = 1, #img_extensions do
+      if ext == img_extensions[i] then
+         return true
+      end
+   end
+   return false
 end
 
+local num = 1
+for file in paths.iterfiles('test/') do
+   -- Processing with image
 
--- Processing with image
-local img = frame.forward(img)
-image.save("src.png", img)
-if img:dim() == 3 then
-   img = img:view(1, img:size(1), img:size(2), img:size(3))
-end
-local scaledImg = torch.Tensor(1, 3, opt.ratio * img:size(3), opt.ratio * img:size(4))
+   if has_image_extensions(file) then
 
-if opt.ratio == 1 then
-   scaledImg[1] = img[1]
-else
-   scaledImg[1] = image.scale(img[1],
+      local imgPath = path.join('test/', file)
+      local img = image.load(imgPath) -- frame.forward(img)
+      image.save("in" .. num .. ".png", img)
+
+      if img:dim() == 3 then
+         img = img:view(1, img:size(1), img:size(2), img:size(3))
+      end
+      local scaledImg = torch.Tensor(1, 3, opt.ratio * img:size(3), opt.ratio * img:size(4))
+
+      if opt.ratio == 1 then
+         scaledImg[1] = img[1]
+      else
+         scaledImg[1] = image.scale(img[1],
+                                    opt.ratio * source.w,
+                                    opt.ratio * source.h,
+                                    'bilinear')
+      end
+
+      if opt.dev == 'cuda' then
+         scaledImgGPU = scaleImgGPU or torch.CudaTensor(scaledImg:size())
+         scaledImgGPU:copy(scaledImg)
+         scaledImg = scaledImgGPU
+      end
+
+      -- compute network on frame:
+      distributions = network.model:forward(scaledImg):squeeze()
+
+      _, winners = distributions:max(1)
+
+      if opt.dev == 'cuda' then
+         cutorch.synchronize()
+         winner = winners:squeeze():float()
+      else
+         winner = winners:squeeze()
+      end
+
+      -- Confirming whether rescaling is even necessary or not
+      if opt.ratio * source.h ~= winner:size(1) or
+         opt.ratio * source.w ~= winner:size(2) then
+         winner = image.scale(winner:float(),
                               opt.ratio * source.w,
                               opt.ratio * source.h,
-                              'bilinear')
+                              'simple')
+      end
+
+      -- colorize classes
+      colored, colormap = imgraph.colorize(winner, colormap)
+
+      -- add input image:
+      colored:add(scaledImg[1]:float())
+
+      image.save('out' .. num .. '.png', colored)
+      num = num + 1
+
+      collectgarbage()
+   end
+
+   
+
 end
-
-if opt.dev == 'cuda' then
-   scaledImgGPU = scaleImgGPU or torch.CudaTensor(scaledImg:size())
-   scaledImgGPU:copy(scaledImg)
-   scaledImg = scaledImgGPU
-end
-
--- compute network on frame:
-distributions = network.model:forward(scaledImg):squeeze()
-
-_, winners = distributions:max(1)
-
-if opt.dev == 'cuda' then
-   cutorch.synchronize()
-   winner = winners:squeeze():float()
-else
-   winner = winners:squeeze()
-end
-
--- Confirming whether rescaling is even necessary or not
-if opt.ratio * source.h ~= winner:size(1) or
-   opt.ratio * source.w ~= winner:size(2) then
-   winner = image.scale(winner:float(),
-                        opt.ratio * source.w,
-                        opt.ratio * source.h,
-                        'simple')
-end
-
--- colorize classes
-colored, colormap = imgraph.colorize(winner, colormap)
-
--- add input image:
-colored:add(scaledImg[1]:float())
-
-image.save('res.png', colored)
-
-collectgarbage()
